@@ -3,6 +3,7 @@ import Foundation
 
 struct TransactionModel: Identifiable {
     let id: UUID = UUID()
+    var status: StatusTransaction
     var title: String
     var amount: String
     var currency: CurrencyType

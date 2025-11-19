@@ -1,26 +1,26 @@
 import SwiftUI
 
 struct HomeContainerView: View {
-    @State private var transactions: [TransactionModel] = [
-        TransactionModel(title: "PHANNA", amount: "100.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SREY LEAK", amount: "99.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SILIB", amount: "200.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SOPHEA", amount: "120.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SOPHEA", amount: "120.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SOPHEA", amount: "120.0", currency: .usd, type: .expense, date: Date.now),
-        TransactionModel(title: "SOPHEA", amount: "120.0", currency: .usd, type: .expense, date: Date.now),
-    ]
+    @StateObject private var viewmodel: HomeViewModel = HomeViewModel()
 
     var body: some View {
         VStack {
             List {
-                ForEach(transactions) { transaction in
+                ForEach(viewmodel.transactions) { transaction in
                     TransactionContainerView(transaction: transaction)
                         .listRowSeparator(.hidden)
+                        .listRowSeparatorTint(.red.opacity(0.5))
                 }
             }
+            .listStyle(.grouped)
+            .ignoresSafeArea(.all)
             .scrollContentBackground(.hidden)
+            .background(.white)
+            .refreshable {
+                viewmodel.onUpdateTransactions()
+            }
         }
+        .padding(.top, 24)
     }
 }
 

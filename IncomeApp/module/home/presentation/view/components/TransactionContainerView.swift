@@ -2,25 +2,11 @@
 import SwiftUI
 
 struct TransactionContainerView: View {
-    
     let transaction: TransactionModel
-    
+
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                Text(transaction.dateFormatted)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(.black)
-                Spacer()
-            }
-            .frame(width: .infinity, alignment: .leading)
-            .padding(.vertical, 10)
-            .background(.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .padding(.bottom, 4)
-
-            HStack {
+            HStack(spacing: 12) {
                 Image(systemName: transaction.type == .income ?
                     "arrow.up.forward" : "arrow.down.forward")
                     .foregroundStyle(transaction.type == .income ? .blue : .red)
@@ -28,21 +14,53 @@ struct TransactionContainerView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(transaction.title)
+                        Text(transaction.title.uppercased())
                             .foregroundStyle(.black)
                             .font(.system(size: 16, weight: .medium))
 
                         Spacer()
 
-                        Text(transaction.displayAmount)
+                        Text(transaction.displayAmount.uppercased())
                             .font(.system(size: 15, weight: .medium))
                             .foregroundStyle(.black)
                     }
-                    Text("Completed")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.black)
+
+                    HStack {
+                        Text(onTransactionStatus(status: transaction.status).uppercased())
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundStyle(onStatusColor(status: transaction.status))
+                            .lineLimit(1)
+
+                        Spacer()
+
+                        Text(transaction.dateFormatted.uppercased())
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundStyle(.black)
+                            .lineLimit(1)
+                    }
                 }
             }
         }
+        .padding(.vertical, 8)
     }
+
+    private func onStatusColor(status: StatusTransaction) -> Color {
+        return switch status {
+        case .completed: .green
+        case .failed: .red
+        case .pending: .gray
+        }
+    }
+
+    private func onTransactionStatus(status: StatusTransaction) -> String {
+        return switch status {
+        case .pending: "Pending"
+        case .completed: "Success"
+        case .failed: "Unsuccess"
+        }
+    }
+}
+
+#Preview {
+    TransactionContainerView(transaction: TransactionModel(status: .completed, title: "Apple", amount: "12", currency: .usd, type: .expense, date: Date()))
 }
