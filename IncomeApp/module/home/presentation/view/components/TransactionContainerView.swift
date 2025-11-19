@@ -41,7 +41,8 @@ struct TransactionContainerView: View {
                 }
             }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 14)
+        .padding(.horizontal, 12)
     }
 
     private func onStatusColor(status: StatusTransaction) -> Color {

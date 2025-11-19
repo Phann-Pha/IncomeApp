@@ -9,10 +9,12 @@ struct HomeContainerView: View {
                 ForEach(viewmodel.transactions) { transaction in
                     TransactionContainerView(transaction: transaction)
                         .listRowSeparator(.hidden)
-                        .listRowSeparatorTint(.red.opacity(0.5))
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparatorTint(.red.opacity(0.1))
                 }
             }
             .listStyle(.grouped)
+            .listRowInsets(EdgeInsets())
             .ignoresSafeArea(.all)
             .scrollContentBackground(.hidden)
             .background(.white)
@@ -20,7 +22,7 @@ struct HomeContainerView: View {
                 viewmodel.onUpdateTransactions()
             }
         }
-        .padding(.top, 24)
+        .padding(.top, 8)
     }
 }
 
